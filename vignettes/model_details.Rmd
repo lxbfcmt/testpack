@@ -1,5 +1,5 @@
 ---
-title: "Vignette Title"
+title: "testpack for learning"
 author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -34,6 +34,7 @@ The figure sizes have been customised so that you can easily put two images side
 ```{r, fig.show='hold'}
 plot(1:10)
 plot(10:1)
+plot(airquality)
 ```
 
 You can enable figure captions by `fig_caption: yes` in YAML:
