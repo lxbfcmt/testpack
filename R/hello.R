@@ -10,25 +10,45 @@
 #' should be created. The default value is \code{FALSE}.
 #'
 #' @export
-some_function <- function(force = FALSE){
+save_file <- function(file = "result.txt", savepath = "", force = FALSE){
   #
   # ... some code that does something useful ...
   #
-  if(!dir.exists(file.path("~", "Desktop"))){
-    warning("No Desktop found.")}
-  else {
-      if(!force && interactive()){
-        result <- select.list(c("Yes", "No"),
-                              title = "May this program create data.txt on your desktop?")
-        if(result == "Yes"){
-          file.create(file.path("~", "Desktop", "data.txt"))
+  if(!dir.exists(savepath)){
+    result2 <- select.list(c("yes", "no"),
+                          title = paste("Would you like to use current path",getwd(),"as your working path?"))
+    if(result2 == "yes"){
+      savepath = getwd()
+    }
+    else{
+      print("please input the directory you want to set.")
+      savepath = scan()
+    }
+  }
+
+  if(!force && interactive()){
+    result = file.exists(file.path(normalizePath(savepath),file))
+    if(result){
+      ans <- select.list(c("yes","no"),title = "do you want to overwrite the exist file?")
+      if(ans == "no"){
+        warning("Exit without saving.")
+        }
+      else if(ans == "yes"){
+        print(paste("result.txt will be overwrote."))
+        file.create(file.path(normalizePath(savepath),file))
         }
       }
-    else if(force){
-        file.create(file.path("~", "Desktop", "data.txt"))
-      }
-    else {
-        warning("data.txt was not created on the Desktop.")
+    else{
+      print(paste("result.txt is saved."))
+      file.create(file.path(normalizePath(savepath),file))
       }
     }
+  else if(force){
+    print("default path will be used compulsorily.")
+    file.create(file.path(normalizePath(savepath),file))
+    }
+  else {
+    warning("result.txt will not be created.")
+    }
+
 }
